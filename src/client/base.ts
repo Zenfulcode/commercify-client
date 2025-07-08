@@ -128,6 +128,8 @@ export abstract class BaseApiClient implements IApiClient {
       );
     }
 
+    console.log(`GET request to: ${url.toString()}`);
+
     const response = await fetch(url.toString(), {
       method: "GET",
       headers: this.getHeaders(),
