@@ -1,13 +1,7 @@
 import { PRIVATE_API_URL } from "$env/static/private";
 import type { RequestEvent } from "@sveltejs/kit";
 import { CommercifyApiClient } from "commercify-api-client";
-import {
-  serverCache,
-  CACHE_TTL,
-  getCachedOrFetch,
-  getSessionCacheKey,
-  CheckoutSessionCache,
-} from "./cache.js";
+import { CACHE_TTL, getCachedOrFetch, CheckoutSessionCache } from "./cache.js";
 import type {
   AddToCheckoutRequest,
   SetCustomerDetailsRequest,

@@ -18,13 +18,13 @@ export class ShippingEndpoints {
   constructor(private client: IApiClient) {}
 
   // Public endpoints
-  async calculateOptions<R = ResponseDTO<ShippingOptionDTO[]>>(
+  async calculateOptions<R = ListResponseDTO<ShippingOptionDTO>>(
     data: CalculateShippingOptionsRequest,
-    mapper?: Mapper<ResponseDTO<ShippingOptionDTO[]>, R>
+    mapper?: Mapper<ListResponseDTO<ShippingOptionDTO>, R>
   ): Promise<R> {
     return this.client.post<
       CalculateShippingOptionsRequest,
-      ResponseDTO<ShippingOptionDTO[]>,
+      ListResponseDTO<ShippingOptionDTO>,
       R
     >("/api/shipping/options", data, mapper);
   }
