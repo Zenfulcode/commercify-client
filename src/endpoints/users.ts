@@ -4,7 +4,13 @@ import {
   UpdateUserRequest,
   ChangePasswordRequest,
   ResponseDTO,
+  ListResponseDTO,
 } from "../types/contracts";
+
+export interface AdminUserListRequest {
+  page?: number;
+  page_size?: number;
+}
 
 export class UserEndpoints {
   constructor(private client: IApiClient) {}
@@ -34,6 +40,17 @@ export class UserEndpoints {
     return this.client.put<ChangePasswordRequest, void, void>(
       "/api/users/me/password",
       data
+    );
+  }
+
+  async listUsers<R = ListResponseDTO<UserDTO>>(
+    params?: AdminUserListRequest,
+    mapper?: Mapper<ListResponseDTO<UserDTO>, R>
+  ): Promise<R> {
+    return this.client.get<AdminUserListRequest, R>(
+      "/api/admin/users",
+      params || {},
+      mapper
     );
   }
 }

@@ -12,6 +12,5 @@ export * from "./endpoints/users";
 export * from "./endpoints/payment-providers";
 export * from "./endpoints/admin";
 export * from "./endpoints/health";
-export * from "./endpoints/webhooks";
 export * from "./types/contracts";
 export * from "./types/dtos";

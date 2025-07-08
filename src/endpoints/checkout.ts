@@ -13,6 +13,13 @@ import {
 import { CheckoutDTO } from "../types/dtos";
 import { IApiClient, Mapper } from "../client/base";
 
+export interface AdminCheckoutSearchRequest {
+  user_id?: number;
+  status?: string;
+  page?: number;
+  page_size?: number;
+}
+
 export class CheckoutEndpoints {
   constructor(private client: IApiClient) {}
 
@@ -152,5 +159,32 @@ export class CheckoutEndpoints {
       ResponseDTO<CheckoutCompleteResponse>,
       R
     >("/api/checkout/complete", data, mapper);
+  }
+
+  // Checkout Management
+  async listCheckouts<R = ListResponseDTO<CheckoutDTO>>(
+    params?: AdminCheckoutSearchRequest,
+    mapper?: Mapper<ListResponseDTO<CheckoutDTO>, R>
+  ): Promise<R> {
+    return this.client.get<AdminCheckoutSearchRequest, R>(
+      "/api/admin/checkouts",
+      params || {},
+      mapper
+    );
+  }
+
+  async getCheckout<R = ResponseDTO<CheckoutDTO>>(
+    checkoutId: number,
+    mapper?: Mapper<ResponseDTO<CheckoutDTO>, R>
+  ): Promise<R> {
+    return this.client.get<Record<string, never>, R>(
+      `/api/admin/checkouts/${checkoutId}`,
+      undefined,
+      mapper
+    );
+  }
+
+  async deleteCheckout(checkoutId: number): Promise<void> {
+    return this.client.delete<void, void>(`/api/admin/checkouts/${checkoutId}`);
   }
 }
