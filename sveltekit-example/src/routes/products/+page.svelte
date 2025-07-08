@@ -1,6 +1,7 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import type { PageData, ActionData } from "./$types";
+  import type { Product } from "$lib/types/product.js";
 
   let { data, form }: { data: PageData; form: ActionData } = $props();
 
@@ -122,9 +123,42 @@
               class="product-image"
             />
           {/if}
-          <h3>{product.name}</h3>
-          <p class="price">{formatCurrency(product.price)}</p>
+          <h3>
+            <a href="/products/{product.id}" class="product-link">
+              {product.name}
+            </a>
+          </h3>
+          <p class="price">{product.price.formatted}</p>
           <p class="description">{product.description}</p>
+
+          {#if product.hasVariants && product.variants.length > 0}
+            <div class="variants-info">
+              <p class="variants-count">
+                {product.variants.length} variant(s) available
+              </p>
+              <div class="variants-preview">
+                {#each product.variants.slice(0, 3) as variant}
+                  <span class="variant-sku">{variant.sku}</span>
+                {/each}
+                {#if product.variants.length > 3}
+                  <span class="more-variants"
+                    >+{product.variants.length - 3} more</span
+                  >
+                {/if}
+              </div>
+            </div>
+          {/if}
+
+          <div class="stock-info">
+            <span
+              class="stock-count {product.stock === 0 ? 'out-of-stock' : ''}"
+            >
+              {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
+            </span>
+            {#if product.weight}
+              <span class="weight">Weight: {product.weight}g</span>
+            {/if}
+          </div>
 
           <form method="POST" action="?/addToCart" use:enhance>
             <input type="hidden" name="sku" value={product.sku} />
@@ -136,10 +170,17 @@
                 name="quantity"
                 value="1"
                 min="1"
-                max="10"
+                max={Math.min(10, product.stock)}
+                disabled={product.stock === 0}
               />
             </div>
-            <button type="submit" class="add-to-cart">Add to Cart</button>
+            <button
+              type="submit"
+              class="add-to-cart"
+              disabled={product.stock === 0}
+            >
+              {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
+            </button>
           </form>
         </div>
       {/each}
@@ -283,6 +324,79 @@
 
   .add-to-cart:hover {
     background: #2563eb;
+  }
+
+  .add-to-cart:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+  }
+
+  .variants-info {
+    margin: 0.75rem 0;
+    padding: 0.5rem;
+    background: #f8fafc;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .variants-count {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 0 0 0.25rem 0;
+    font-weight: 500;
+  }
+
+  .variants-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .variant-sku {
+    background: #e0e7ff;
+    color: #3730a3;
+    padding: 0.125rem 0.375rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .more-variants {
+    color: #6b7280;
+    font-size: 0.75rem;
+    font-style: italic;
+  }
+
+  .stock-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.75rem 0;
+    font-size: 0.875rem;
+  }
+
+  .stock-count {
+    color: #059669;
+    font-weight: 500;
+  }
+
+  .stock-count.out-of-stock {
+    color: #dc2626;
+  }
+
+  .weight {
+    color: #6b7280;
+  }
+
+  .product-link {
+    color: #1f2937;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .product-link:hover {
+    color: #3b82f6;
+    text-decoration: underline;
   }
 
   .error {

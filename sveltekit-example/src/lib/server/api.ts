@@ -15,6 +15,11 @@ import type {
   SetBillingAddressRequest,
   SetShippingMethodRequest,
 } from "commercify-api-client";
+import {
+  mapProductDTOToProduct,
+  mapProductListResponse,
+} from "../mappers/product.js";
+import type { Product } from "../types/product.js";
 
 /**
  * Cached API client wrapper that adds caching to API operations
@@ -33,7 +38,7 @@ export class CachedCommercifyApiClient {
     }
   }
 
-  // Products endpoint with caching
+  // Products endpoint with caching and mapping to application types
   get products() {
     return {
       search: async (request: any) => {
@@ -41,7 +46,17 @@ export class CachedCommercifyApiClient {
 
         return getCachedOrFetch(
           cacheKey,
-          () => this.client.products.search(request),
+          () => this.client.products.search(request, mapProductListResponse),
+          CACHE_TTL.PRODUCTS
+        );
+      },
+
+      get: async (productId: number): Promise<Product> => {
+        const cacheKey = `product:${productId}`;
+
+        return getCachedOrFetch(
+          cacheKey,
+          () => this.client.products.get(productId, mapProductDTOToProduct),
           CACHE_TTL.PRODUCTS
         );
       },

@@ -1,22 +1,23 @@
 import type { PageServerLoad, Actions } from "./$types";
 import { fail } from "@sveltejs/kit";
 import type { AddToCheckoutRequest } from "commercify-api-client";
+import type { Product } from "$lib/types/product.js";
 
 export const load: PageServerLoad = async ({ locals }) => {
   try {
-    // Use the API client to fetch products
+    // Use the API client to fetch products with mapping to application types
     const productsResponse = await locals.api.products.search({});
 
     console.log("Fetched products:", productsResponse);
 
     return {
-      products: productsResponse.data || [],
+      products: productsResponse.data as Product[],
       success: true,
     };
   } catch (error) {
     console.error("Failed to fetch products:", error);
     return {
-      products: [],
+      products: [] as Product[],
       success: false,
       error: "Failed to load products",
     };

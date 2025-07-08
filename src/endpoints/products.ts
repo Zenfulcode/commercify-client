@@ -1,5 +1,5 @@
 import { ProductDTO } from "../types/dtos";
-import { IApiClient } from "../client/base";
+import { IApiClient, Mapper } from "../client/base";
 import { ListResponseDTO } from "../types/contracts";
 
 export interface ProductSearchRequest {
@@ -16,18 +16,25 @@ export interface ProductSearchRequest {
 export class ProductEndpoints {
   constructor(private client: IApiClient) {}
 
-  async get(productId: number): Promise<ProductDTO> {
-    return this.client.get<Record<string, never>, ProductDTO>(
-      `/api/products/${productId}`
+  async get<R = ProductDTO>(
+    productId: number,
+    mapper?: Mapper<ProductDTO, R>
+  ): Promise<R> {
+    return this.client.get<Record<string, never>, R>(
+      `/api/products/${productId}`,
+      undefined,
+      mapper
     );
   }
 
-  async search(
-    params: ProductSearchRequest
-  ): Promise<ListResponseDTO<ProductDTO>> {
-    return this.client.get<ProductSearchRequest, ListResponseDTO<ProductDTO>>(
+  async search<R = ListResponseDTO<ProductDTO>>(
+    params: ProductSearchRequest,
+    mapper?: Mapper<ListResponseDTO<ProductDTO>, R>
+  ): Promise<R> {
+    return this.client.get<ProductSearchRequest, R>(
       "/api/products/search",
-      params
+      params,
+      mapper
     );
   }
 }
