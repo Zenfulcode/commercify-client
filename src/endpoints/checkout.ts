@@ -5,109 +5,152 @@ import {
   SetShippingAddressRequest,
   SetShippingMethodRequest,
   UpdateCheckoutItemRequest,
+  ResponseDTO,
+  CheckoutCompleteResponse,
+  CompleteCheckoutRequest,
+  ListResponseDTO,
 } from "../types/contracts";
 import { CheckoutDTO } from "../types/dtos";
-import { IApiClient } from "../client/base";
+import { IApiClient, Mapper } from "../client/base";
 
 export class CheckoutEndpoints {
   constructor(private client: IApiClient) {}
 
-  async get(): Promise<CheckoutDTO> {
-    return this.client.get<Record<string, never>, CheckoutDTO>("/api/checkout");
+  async get<R = ResponseDTO<CheckoutDTO>>(
+    mapper?: Mapper<ResponseDTO<CheckoutDTO>, R>
+  ): Promise<R> {
+    return this.client.get<Record<string, never>, R>(
+      "/api/checkout",
+      undefined,
+      mapper
+    );
   }
 
-  async addItem(item: AddToCheckoutRequest): Promise<CheckoutDTO> {
-    return this.client.post<AddToCheckoutRequest, CheckoutDTO, CheckoutDTO>(
+  async addItem<R = ResponseDTO<CheckoutDTO>>(
+    item: AddToCheckoutRequest,
+    mapper?: Mapper<ResponseDTO<CheckoutDTO>, R>
+  ): Promise<R> {
+    return this.client.post<AddToCheckoutRequest, ResponseDTO<CheckoutDTO>, R>(
       "/api/checkout/items",
-      item
+      item,
+      mapper
     );
   }
 
-  async updateItem(
+  async updateItem<R = ResponseDTO<CheckoutDTO>>(
     sku: string,
-    item: UpdateCheckoutItemRequest
-  ): Promise<CheckoutDTO> {
-    return this.client.put<UpdateCheckoutItemRequest, CheckoutDTO, CheckoutDTO>(
+    item: UpdateCheckoutItemRequest,
+    mapper?: Mapper<ResponseDTO<CheckoutDTO>, R>
+  ): Promise<R> {
+    return this.client.put<
+      UpdateCheckoutItemRequest,
+      ResponseDTO<CheckoutDTO>,
+      R
+    >(`/api/checkout/items/${sku}`, item, mapper);
+  }
+
+  async removeItem<R = ResponseDTO<CheckoutDTO>>(
+    sku: string,
+    mapper?: Mapper<ResponseDTO<CheckoutDTO>, R>
+  ): Promise<R> {
+    return this.client.delete<ResponseDTO<CheckoutDTO>, R>(
       `/api/checkout/items/${sku}`,
-      item
+      mapper
     );
   }
 
-  async removeItem(sku: string): Promise<CheckoutDTO> {
-    return this.client.delete<CheckoutDTO, CheckoutDTO>(
-      `/api/checkout/items/${sku}`
+  async clear<R = ResponseDTO<CheckoutDTO>>(
+    mapper?: Mapper<ResponseDTO<CheckoutDTO>, R>
+  ): Promise<R> {
+    return this.client.delete<ResponseDTO<CheckoutDTO>, R>(
+      "/api/checkout",
+      mapper
     );
   }
 
-  async clear(): Promise<CheckoutDTO> {
-    return this.client.delete<CheckoutDTO, CheckoutDTO>("/api/checkout");
+  async setShippingAddress<R = ResponseDTO<CheckoutDTO>>(
+    address: SetShippingAddressRequest,
+    mapper?: Mapper<ResponseDTO<CheckoutDTO>, R>
+  ): Promise<R> {
+    return this.client.put<
+      SetShippingAddressRequest,
+      ResponseDTO<CheckoutDTO>,
+      R
+    >("/api/checkout/shipping-address", address, mapper);
   }
 
-  async setShippingAddress(
-    address: SetShippingAddressRequest
-  ): Promise<CheckoutDTO> {
-    return this.client.put<SetShippingAddressRequest, CheckoutDTO, CheckoutDTO>(
-      "/api/checkout/shipping-address",
-      address
-    );
+  async setBillingAddress<R = ResponseDTO<CheckoutDTO>>(
+    address: SetBillingAddressRequest,
+    mapper?: Mapper<ResponseDTO<CheckoutDTO>, R>
+  ): Promise<R> {
+    return this.client.put<
+      SetBillingAddressRequest,
+      ResponseDTO<CheckoutDTO>,
+      R
+    >("/api/checkout/billing-address", address, mapper);
   }
 
-  async setBillingAddress(
-    address: SetBillingAddressRequest
-  ): Promise<CheckoutDTO> {
-    return this.client.put<SetBillingAddressRequest, CheckoutDTO, CheckoutDTO>(
-      "/api/checkout/billing-address",
-      address
-    );
+  async setCustomerDetails<R = ResponseDTO<CheckoutDTO>>(
+    customer: SetCustomerDetailsRequest,
+    mapper?: Mapper<ResponseDTO<CheckoutDTO>, R>
+  ): Promise<R> {
+    return this.client.put<
+      SetCustomerDetailsRequest,
+      ResponseDTO<CheckoutDTO>,
+      R
+    >("/api/checkout/customer-details", customer, mapper);
   }
 
-  async setCustomerDetails(
-    customer: SetCustomerDetailsRequest
-  ): Promise<CheckoutDTO> {
-    return this.client.put<SetCustomerDetailsRequest, CheckoutDTO, CheckoutDTO>(
-      "/api/checkout/customer-details",
-      customer
-    );
+  async setShippingMethod<R = ResponseDTO<CheckoutDTO>>(
+    method: SetShippingMethodRequest,
+    mapper?: Mapper<ResponseDTO<CheckoutDTO>, R>
+  ): Promise<R> {
+    return this.client.put<
+      SetShippingMethodRequest,
+      ResponseDTO<CheckoutDTO>,
+      R
+    >("/api/checkout/shipping-method", method, mapper);
   }
 
-  async setShippingMethod(
-    method: SetShippingMethodRequest
-  ): Promise<CheckoutDTO> {
-    return this.client.put<SetShippingMethodRequest, CheckoutDTO, CheckoutDTO>(
-      "/api/checkout/shipping-method",
-      method
-    );
-  }
-
-  async setCurrency(currency: string): Promise<CheckoutDTO> {
-    return this.client.put<{ currency: string }, CheckoutDTO, CheckoutDTO>(
+  async setCurrency<R = ResponseDTO<CheckoutDTO>>(
+    currency: string,
+    mapper?: Mapper<ResponseDTO<CheckoutDTO>, R>
+  ): Promise<R> {
+    return this.client.put<{ currency: string }, ResponseDTO<CheckoutDTO>, R>(
       "/api/checkout/currency",
-      { currency }
+      { currency },
+      mapper
     );
   }
 
-  async applyDiscount(discountCode: string): Promise<CheckoutDTO> {
+  async applyDiscount<R = ResponseDTO<CheckoutDTO>>(
+    discountCode: string,
+    mapper?: Mapper<ResponseDTO<CheckoutDTO>, R>
+  ): Promise<R> {
     return this.client.post<
       { discount_code: string },
-      CheckoutDTO,
-      CheckoutDTO
-    >("/api/checkout/discount", { discount_code: discountCode });
+      ResponseDTO<CheckoutDTO>,
+      R
+    >("/api/checkout/discount", { discount_code: discountCode }, mapper);
   }
 
-  async removeDiscount(): Promise<CheckoutDTO> {
-    return this.client.delete<CheckoutDTO, CheckoutDTO>(
-      "/api/checkout/discount"
+  async removeDiscount<R = ResponseDTO<CheckoutDTO>>(
+    mapper?: Mapper<ResponseDTO<CheckoutDTO>, R>
+  ): Promise<R> {
+    return this.client.delete<ResponseDTO<CheckoutDTO>, R>(
+      "/api/checkout/discount",
+      mapper
     );
   }
 
-  async complete(provider: string, paymentData: any): Promise<any> {
+  async complete<R = ResponseDTO<CheckoutCompleteResponse>>(
+    data: CompleteCheckoutRequest,
+    mapper?: Mapper<ResponseDTO<CheckoutCompleteResponse>, R>
+  ): Promise<R> {
     return this.client.post<
-      { payment_provider: string; payment_data: any },
-      any,
-      any
-    >("/api/checkout/complete", {
-      payment_provider: provider,
-      payment_data: paymentData,
-    });
+      CompleteCheckoutRequest,
+      ResponseDTO<CheckoutCompleteResponse>,
+      R
+    >("/api/checkout/complete", data, mapper);
   }
 }

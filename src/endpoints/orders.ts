@@ -1,6 +1,6 @@
 import { OrderDTO, OrderSummaryDTO } from "../types/dtos";
-import { IApiClient } from "../client/base";
-import { ListResponseDTO } from "../types/contracts";
+import { IApiClient, Mapper } from "../client/base";
+import { ListResponseDTO, ResponseDTO } from "../types/contracts";
 
 export interface OrderListRequest {
   page?: number;
@@ -10,18 +10,21 @@ export interface OrderListRequest {
 export class OrderEndpoints {
   constructor(private client: IApiClient) {}
 
-  async list(
-    params: OrderListRequest
-  ): Promise<ListResponseDTO<OrderSummaryDTO>> {
-    return this.client.get<OrderListRequest, ListResponseDTO<OrderSummaryDTO>>(
-      "/api/orders",
-      params
-    );
+  async list<R = ListResponseDTO<OrderSummaryDTO>>(
+    params: OrderListRequest,
+    mapper?: Mapper<ListResponseDTO<OrderSummaryDTO>, R>
+  ): Promise<R> {
+    return this.client.get<OrderListRequest, R>("/api/orders", params, mapper);
   }
 
-  async get(orderId: string): Promise<OrderDTO> {
-    return this.client.get<Record<string, never>, OrderDTO>(
-      `/api/orders/${orderId}`
+  async get<R = ResponseDTO<OrderDTO>>(
+    orderId: string,
+    mapper?: Mapper<ResponseDTO<OrderDTO>, R>
+  ): Promise<R> {
+    return this.client.get<Record<string, never>, R>(
+      `/api/orders/${orderId}`,
+      undefined,
+      mapper
     );
   }
 }
