@@ -2,6 +2,7 @@ import { UserDTO } from "../types/dtos";
 import { IApiClient, Mapper } from "../client/base";
 import {
   CreateUserRequest,
+  ResponseDTO,
   UserLoginRequest,
   UserLoginResponse,
 } from "../types/contracts";
@@ -9,25 +10,25 @@ import {
 export class AuthEndpoints {
   constructor(private client: IApiClient) {}
 
-  async register<R = CreateUserRequest>(
+  async register<R = ResponseDTO<UserLoginResponse>>(
     data: CreateUserRequest,
-    mapper?: Mapper<CreateUserRequest, R>
+    mapper?: Mapper<ResponseDTO<UserLoginResponse>, R>
   ): Promise<R> {
-    return this.client.post<CreateUserRequest, CreateUserRequest, R>(
-      "/api/auth/register",
-      data,
-      mapper
-    );
+    return this.client.post<
+      CreateUserRequest,
+      ResponseDTO<UserLoginResponse>,
+      R
+    >("/api/auth/register", data, mapper);
   }
 
-  async signin<R = UserLoginResponse>(
+  async signin<R = ResponseDTO<UserLoginResponse>>(
     data: UserLoginRequest,
-    mapper?: Mapper<UserLoginResponse, R>
+    mapper?: Mapper<ResponseDTO<UserLoginResponse>, R>
   ): Promise<R> {
-    return this.client.post<UserLoginRequest, UserLoginResponse, R>(
-      "/api/auth/signin",
-      data,
-      mapper
-    );
+    return this.client.post<
+      UserLoginRequest,
+      ResponseDTO<UserLoginResponse>,
+      R
+    >("/api/auth/signin", data, mapper);
   }
 }
