@@ -15,14 +15,12 @@ export interface ProductSearchRequest {
   min_price?: number;
   max_price?: number;
   currency?: string;
-  active_only?: boolean;
   page?: number;
   page_size?: number;
 }
 
-export interface AdminProductListRequest {
-  page?: number;
-  page_size?: number;
+export interface AdminProductListRequest extends ProductSearchRequest {
+  active?: boolean;
 }
 
 export class ProductEndpoints {
