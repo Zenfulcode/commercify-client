@@ -9,11 +9,11 @@ import {
 export class AuthEndpoints {
   constructor(private client: IApiClient) {}
 
-  async register<R = UserLoginResponse>(
+  async register<R = CreateUserRequest>(
     data: CreateUserRequest,
-    mapper?: Mapper<UserLoginResponse, R>
+    mapper?: Mapper<CreateUserRequest, R>
   ): Promise<R> {
-    return this.client.post<CreateUserRequest, UserLoginResponse, R>(
+    return this.client.post<CreateUserRequest, CreateUserRequest, R>(
       "/api/auth/register",
       data,
       mapper
