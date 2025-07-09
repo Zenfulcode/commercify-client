@@ -11,10 +11,10 @@ export interface UpdateOrderStatusRequest {
   status: OrderStatus;
 }
 
-export interface AdminOrderListRequest {
-  page?: number;
-  page_size?: number;
+export interface AdminOrderListRequest extends OrderListRequest {
   status?: string;
+  include_payment_transactions?: boolean;
+  include_items?: boolean;
 }
 
 export class OrderEndpoints {
