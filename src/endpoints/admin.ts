@@ -1,4 +1,10 @@
-import { IApiClient } from "../client/base";
+import { IApiClient, Mapper } from "../client/base";
+import {
+  CapturePaymentRequest,
+  RefundPaymentRequest,
+  ResponseDTO,
+} from "../types/contracts";
+import { EmailTestDetails } from "../types/dtos";
 
 export interface TestEmailRequest {
   to: string;
@@ -11,24 +17,38 @@ export class AdminEndpoints {
   constructor(private client: IApiClient) {}
 
   // Payment Management
-  async capturePayment(paymentId: string): Promise<void> {
-    return this.client.post<Record<string, never>, void, void>(
+  async capturePayment<R = ResponseDTO<string>>(
+    paymentId: string,
+    options: CapturePaymentRequest,
+    mapper?: Mapper<ResponseDTO<string>, R>
+  ): Promise<R> {
+    return this.client.post<CapturePaymentRequest, ResponseDTO<string>, R>(
       `/api/admin/payments/${paymentId}/capture`,
-      {}
+      options,
+      mapper
     );
   }
 
-  async cancelPayment(paymentId: string): Promise<void> {
-    return this.client.post<Record<string, never>, void, void>(
+  async cancelPayment<R = ResponseDTO<string>>(
+    paymentId: string,
+    mapper?: Mapper<ResponseDTO<string>, R>
+  ): Promise<R> {
+    return this.client.post<Record<string, never>, ResponseDTO<string>, R>(
       `/api/admin/payments/${paymentId}/cancel`,
-      {}
+      {},
+      mapper
     );
   }
 
-  async refundPayment(paymentId: string, amount?: number): Promise<void> {
-    return this.client.post<{ amount?: number }, void, void>(
+  async refundPayment<R = ResponseDTO<string>>(
+    paymentId: string,
+    options: RefundPaymentRequest,
+    mapper?: Mapper<ResponseDTO<string>, R>
+  ): Promise<R> {
+    return this.client.post<RefundPaymentRequest, ResponseDTO<string>, R>(
       `/api/admin/payments/${paymentId}/refund`,
-      { amount }
+      options,
+      mapper
     );
   }
 
@@ -40,10 +60,14 @@ export class AdminEndpoints {
   }
 
   // Email Testing
-  async sendTestEmail(data: TestEmailRequest): Promise<void> {
-    return this.client.post<TestEmailRequest, void, void>(
+  async sendTestEmail<R = ResponseDTO<EmailTestDetails>>(
+    data: TestEmailRequest,
+    mapper?: Mapper<ResponseDTO<EmailTestDetails>, R>
+  ): Promise<R> {
+    return this.client.post<TestEmailRequest, ResponseDTO<EmailTestDetails>, R>(
       "/api/admin/test/email",
-      data
+      data,
+      mapper
     );
   }
 }
