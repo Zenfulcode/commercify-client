@@ -13,8 +13,11 @@ export interface UpdateOrderStatusRequest {
 
 export interface AdminOrderListRequest extends OrderListRequest {
   status?: string;
-  include_payment_transactions?: boolean;
-  include_items?: boolean;
+}
+
+export interface OrderParameters {
+  includePaymentTransactions?: boolean;
+  includeItems?: boolean;
 }
 
 export class OrderEndpoints {
@@ -29,11 +32,12 @@ export class OrderEndpoints {
 
   async get<R = ResponseDTO<OrderDTO>>(
     orderId: string,
+    params: OrderParameters = {},
     mapper?: Mapper<ResponseDTO<OrderDTO>, R>
   ): Promise<R> {
-    return this.client.get<Record<string, never>, R>(
+    return this.client.get<OrderParameters, R>(
       `/api/orders/${orderId}`,
-      undefined,
+      params,
       mapper
     );
   }
