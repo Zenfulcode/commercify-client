@@ -54,15 +54,15 @@ export class OrderEndpoints {
     );
   }
 
-  async updateOrderStatus<R = ResponseDTO<OrderDTO>>(
+  async updateOrderStatus<R = ResponseDTO<OrderSummaryDTO>>(
     orderId: string,
     data: UpdateOrderStatusRequest,
-    mapper?: Mapper<ResponseDTO<OrderDTO>, R>
+    mapper?: Mapper<ResponseDTO<OrderSummaryDTO>, R>
   ): Promise<R> {
-    return this.client.put<UpdateOrderStatusRequest, ResponseDTO<OrderDTO>, R>(
-      `/api/admin/orders/${orderId}/status`,
-      data,
-      mapper
-    );
+    return this.client.put<
+      UpdateOrderStatusRequest,
+      ResponseDTO<OrderSummaryDTO>,
+      R
+    >(`/api/admin/orders/${orderId}/status`, data, mapper);
   }
 }
