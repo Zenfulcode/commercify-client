@@ -30,22 +30,30 @@ export class ProductEndpoints {
     productId: number,
     mapper?: Mapper<ResponseDTO<ProductDTO>, R>
   ): Promise<R> {
-    return this.client.get<Record<string, never>, R>(
-      `/api/products/${productId}`,
-      undefined,
-      mapper
-    );
+    try {
+      return this.client.get<Record<string, never>, R>(
+        `/api/products/${productId}`,
+        undefined,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async search<R = ListResponseDTO<ProductDTO>>(
     params: ProductSearchRequest,
     mapper?: Mapper<ListResponseDTO<ProductDTO>, R>
   ): Promise<R> {
-    return this.client.get<ProductSearchRequest, R>(
-      "/api/products/search",
-      params,
-      mapper
-    );
+    try {
+      return this.client.get<ProductSearchRequest, R>(
+        "/api/products/search",
+        params,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   // Admin endpoints
@@ -53,22 +61,30 @@ export class ProductEndpoints {
     params?: AdminProductListRequest,
     mapper?: Mapper<ListResponseDTO<ProductDTO>, R>
   ): Promise<R> {
-    return this.client.get<AdminProductListRequest, R>(
-      "/api/admin/products",
-      params || {},
-      mapper
-    );
+    try {
+      return this.client.get<AdminProductListRequest, R>(
+        "/api/admin/products",
+        params || {},
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async create<R = ResponseDTO<ProductDTO>>(
     data: CreateProductRequest,
     mapper?: Mapper<ResponseDTO<ProductDTO>, R>
   ): Promise<R> {
-    return this.client.post<CreateProductRequest, ResponseDTO<ProductDTO>, R>(
-      "/api/admin/products",
-      data,
-      mapper
-    );
+    try {
+      return this.client.post<CreateProductRequest, ResponseDTO<ProductDTO>, R>(
+        "/api/admin/products",
+        data,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async update<R = ResponseDTO<ProductDTO>>(
@@ -76,15 +92,23 @@ export class ProductEndpoints {
     data: UpdateProductRequest,
     mapper?: Mapper<ResponseDTO<ProductDTO>, R>
   ): Promise<R> {
-    return this.client.put<UpdateProductRequest, ResponseDTO<ProductDTO>, R>(
-      `/api/admin/products/${productId}`,
-      data,
-      mapper
-    );
+    try {
+      return this.client.put<UpdateProductRequest, ResponseDTO<ProductDTO>, R>(
+        `/api/admin/products/${productId}`,
+        data,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async delete(productId: number): Promise<void> {
-    return this.client.delete<void, void>(`/api/admin/products/${productId}`);
+    try {
+      return this.client.delete<void, void>(`/api/admin/products/${productId}`);
+    } catch (error) {
+      throw error;
+    }
   }
 
   // Product variant management
@@ -93,11 +117,15 @@ export class ProductEndpoints {
     data: CreateVariantRequest,
     mapper?: Mapper<ResponseDTO<VariantDTO>, R>
   ): Promise<R> {
-    return this.client.post<CreateVariantRequest, ResponseDTO<VariantDTO>, R>(
-      `/api/admin/products/${productId}/variants`,
-      data,
-      mapper
-    );
+    try {
+      return this.client.post<CreateVariantRequest, ResponseDTO<VariantDTO>, R>(
+        `/api/admin/products/${productId}/variants`,
+        data,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async updateVariant<R = ResponseDTO<VariantDTO>>(
@@ -106,16 +134,24 @@ export class ProductEndpoints {
     data: UpdateVariantRequest,
     mapper?: Mapper<ResponseDTO<VariantDTO>, R>
   ): Promise<R> {
-    return this.client.put<UpdateVariantRequest, ResponseDTO<VariantDTO>, R>(
-      `/api/admin/products/${productId}/variants/${variantId}`,
-      data,
-      mapper
-    );
+    try {
+      return this.client.put<UpdateVariantRequest, ResponseDTO<VariantDTO>, R>(
+        `/api/admin/products/${productId}/variants/${variantId}`,
+        data,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async deleteVariant(productId: number, variantId: number): Promise<void> {
-    return this.client.delete<void, void>(
-      `/api/admin/products/${productId}/variants/${variantId}`
-    );
+    try {
+      return this.client.delete<void, void>(
+        `/api/admin/products/${productId}/variants/${variantId}`
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 }

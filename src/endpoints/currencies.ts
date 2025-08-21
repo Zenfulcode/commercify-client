@@ -18,85 +18,117 @@ export class CurrencyEndpoints {
   async list<R = ListResponseDTO<CurrencyDTO>>(
     mapper?: Mapper<ListResponseDTO<CurrencyDTO>, R>
   ): Promise<R> {
-    return this.client.get<Record<string, never>, R>(
-      "/api/currencies",
-      undefined,
-      mapper
-    );
+    try {
+      return this.client.get<Record<string, never>, R>(
+        "/api/currencies",
+        undefined,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async getDefault<R = ResponseDTO<CurrencyDTO>>(
     mapper?: Mapper<ResponseDTO<CurrencyDTO>, R>
   ): Promise<R> {
-    return this.client.get<Record<string, never>, R>(
-      "/api/currencies/default",
-      undefined,
-      mapper
-    );
+    try {
+      return this.client.get<Record<string, never>, R>(
+        "/api/currencies/default",
+        undefined,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async convert<R = ResponseDTO<ConvertAmountResponse>>(
     data: ConvertAmountRequest,
     mapper?: Mapper<ResponseDTO<ConvertAmountResponse>, R>
   ): Promise<R> {
-    return this.client.post<
-      ConvertAmountRequest,
-      ResponseDTO<ConvertAmountResponse>,
-      R
-    >("/api/currencies/convert", data, mapper);
+    try {
+      return this.client.post<
+        ConvertAmountRequest,
+        ResponseDTO<ConvertAmountResponse>,
+        R
+      >("/api/currencies/convert", data, mapper);
+    } catch (error) {
+      throw error;
+    }
   }
 
   // Admin endpoints
   async listAll<R = ListResponseDTO<CurrencyDTO>>(
     mapper?: Mapper<ListResponseDTO<CurrencyDTO>, R>
   ): Promise<R> {
-    return this.client.get<Record<string, never>, R>(
-      "/api/admin/currencies/all",
-      undefined,
-      mapper
-    );
+    try {
+      return this.client.get<Record<string, never>, R>(
+        "/api/admin/currencies/all",
+        undefined,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async create<R = ResponseDTO<CurrencyDTO>>(
     data: CreateCurrencyRequest,
     mapper?: Mapper<ResponseDTO<CurrencyDTO>, R>
   ): Promise<R> {
-    return this.client.post<CreateCurrencyRequest, ResponseDTO<CurrencyDTO>, R>(
-      "/api/admin/currencies",
-      data,
-      mapper
-    );
+    try {
+      return this.client.post<
+        CreateCurrencyRequest,
+        ResponseDTO<CurrencyDTO>,
+        R
+      >("/api/admin/currencies", data, mapper);
+    } catch (error) {
+      throw error;
+    }
   }
 
   async update<R = ResponseDTO<CurrencyDTO>>(
     data: UpdateCurrencyRequest,
     mapper?: Mapper<ResponseDTO<CurrencyDTO>, R>
   ): Promise<R> {
-    return this.client.put<UpdateCurrencyRequest, ResponseDTO<CurrencyDTO>, R>(
-      "/api/admin/currencies",
-      data,
-      mapper
-    );
+    try {
+      return this.client.put<
+        UpdateCurrencyRequest,
+        ResponseDTO<CurrencyDTO>,
+        R
+      >("/api/admin/currencies", data, mapper);
+    } catch (error) {
+      throw error;
+    }
   }
 
   async delete<R = DeleteCurrencyResponse>(
     code: string,
     mapper?: Mapper<DeleteCurrencyResponse, R>
   ): Promise<R> {
-    return this.client.delete<DeleteCurrencyResponse, R>(
-      `/api/admin/currencies?code=${code}`,
-      mapper
-    );
+    try {
+      return this.client.delete<DeleteCurrencyResponse, R>(
+        `/api/admin/currencies?code=${code}`,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async setDefault<R = ResponseDTO<CurrencyDTO>>(
     data: SetDefaultCurrencyRequest,
     mapper?: Mapper<ResponseDTO<CurrencyDTO>, R>
   ): Promise<R> {
-    return this.client.put<
-      SetDefaultCurrencyRequest,
-      ResponseDTO<CurrencyDTO>,
-      R
-    >("/api/admin/currencies/default", data, mapper);
+    try {
+      return this.client.put<
+        SetDefaultCurrencyRequest,
+        ResponseDTO<CurrencyDTO>,
+        R
+      >("/api/admin/currencies/default", data, mapper);
+    } catch (error) {
+      throw error;
+    }
   }
 }

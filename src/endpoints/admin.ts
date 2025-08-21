@@ -22,22 +22,30 @@ export class AdminEndpoints {
     options: CapturePaymentRequest,
     mapper?: Mapper<ResponseDTO<string>, R>
   ): Promise<R> {
-    return this.client.post<CapturePaymentRequest, ResponseDTO<string>, R>(
-      `/api/admin/payments/${paymentId}/capture`,
-      options,
-      mapper
-    );
+    try {
+      return this.client.post<CapturePaymentRequest, ResponseDTO<string>, R>(
+        `/api/admin/payments/${paymentId}/capture`,
+        options,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async cancelPayment<R = ResponseDTO<string>>(
     paymentId: string,
     mapper?: Mapper<ResponseDTO<string>, R>
   ): Promise<R> {
-    return this.client.post<Record<string, never>, ResponseDTO<string>, R>(
-      `/api/admin/payments/${paymentId}/cancel`,
-      {},
-      mapper
-    );
+    try {
+      return this.client.post<Record<string, never>, ResponseDTO<string>, R>(
+        `/api/admin/payments/${paymentId}/cancel`,
+        {},
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async refundPayment<R = ResponseDTO<string>>(
@@ -45,18 +53,26 @@ export class AdminEndpoints {
     options: RefundPaymentRequest,
     mapper?: Mapper<ResponseDTO<string>, R>
   ): Promise<R> {
-    return this.client.post<RefundPaymentRequest, ResponseDTO<string>, R>(
-      `/api/admin/payments/${paymentId}/refund`,
-      options,
-      mapper
-    );
+    try {
+      return this.client.post<RefundPaymentRequest, ResponseDTO<string>, R>(
+        `/api/admin/payments/${paymentId}/refund`,
+        options,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async forceApproveMobilePayPayment(paymentId: string): Promise<void> {
-    return this.client.post<Record<string, never>, void, void>(
-      `/api/admin/payments/${paymentId}/force-approve`,
-      {}
-    );
+    try {
+      return this.client.post<Record<string, never>, void, void>(
+        `/api/admin/payments/${paymentId}/force-approve`,
+        {}
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   // Email Testing
@@ -64,10 +80,14 @@ export class AdminEndpoints {
     data: TestEmailRequest,
     mapper?: Mapper<ResponseDTO<EmailTestDetails>, R>
   ): Promise<R> {
-    return this.client.post<TestEmailRequest, ResponseDTO<EmailTestDetails>, R>(
-      "/api/admin/test/email",
-      data,
-      mapper
-    );
+    try {
+      return this.client.post<
+        TestEmailRequest,
+        ResponseDTO<EmailTestDetails>,
+        R
+      >("/api/admin/test/email", data, mapper);
+    } catch (error) {
+      throw error;
+    }
   }
 }

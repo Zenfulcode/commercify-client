@@ -27,7 +27,11 @@ export class OrderEndpoints {
     params: OrderListRequest,
     mapper?: Mapper<ListResponseDTO<OrderSummaryDTO>, R>
   ): Promise<R> {
-    return this.client.get<OrderListRequest, R>("/api/orders", params, mapper);
+    try {
+      return this.client.get<OrderListRequest, R>("/api/orders", params, mapper);
+    } catch (error) {
+      throw error;
+    }
   }
 
   async get<R = ResponseDTO<OrderDTO>>(
@@ -35,11 +39,15 @@ export class OrderEndpoints {
     params: OrderParameters = {},
     mapper?: Mapper<ResponseDTO<OrderDTO>, R>
   ): Promise<R> {
-    return this.client.get<OrderParameters, R>(
-      `/api/orders/${orderId}`,
-      params,
-      mapper
-    );
+    try {
+      return this.client.get<OrderParameters, R>(
+        `/api/orders/${orderId}`,
+        params,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   // Order Management
@@ -47,11 +55,15 @@ export class OrderEndpoints {
     params?: AdminOrderListRequest,
     mapper?: Mapper<ListResponseDTO<OrderSummaryDTO>, R>
   ): Promise<R> {
-    return this.client.get<AdminOrderListRequest, R>(
-      "/api/admin/orders",
-      params || {},
-      mapper
-    );
+    try {
+      return this.client.get<AdminOrderListRequest, R>(
+        "/api/admin/orders",
+        params || {},
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async updateOrderStatus<R = ResponseDTO<OrderSummaryDTO>>(
@@ -59,10 +71,14 @@ export class OrderEndpoints {
     data: UpdateOrderStatusRequest,
     mapper?: Mapper<ResponseDTO<OrderSummaryDTO>, R>
   ): Promise<R> {
-    return this.client.put<
-      UpdateOrderStatusRequest,
-      ResponseDTO<OrderSummaryDTO>,
-      R
-    >(`/api/admin/orders/${orderId}/status`, data, mapper);
+    try {
+      return this.client.put<
+        UpdateOrderStatusRequest,
+        ResponseDTO<OrderSummaryDTO>,
+        R
+      >(`/api/admin/orders/${orderId}/status`, data, mapper);
+    } catch (error) {
+      throw error;
+    }
   }
 }

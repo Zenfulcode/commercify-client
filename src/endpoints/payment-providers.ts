@@ -25,32 +25,44 @@ export class PaymentProviderEndpoints {
   async getProviders<R = ResponseDTO<PaymentProviderDTO[]>>(
     mapper?: Mapper<ResponseDTO<PaymentProviderDTO[]>, R>
   ): Promise<R> {
-    return this.client.get<Record<string, never>, R>(
-      "/api/payment/providers",
-      undefined,
-      mapper
-    );
+    try {
+      return this.client.get<Record<string, never>, R>(
+        "/api/payment/providers",
+        undefined,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   // Admin endpoints
   async getAllProviders<R = ResponseDTO<PaymentProviderDTO[]>>(
     mapper?: Mapper<ResponseDTO<PaymentProviderDTO[]>, R>
   ): Promise<R> {
-    return this.client.get<Record<string, never>, R>(
-      "/api/admin/payment-providers",
-      undefined,
-      mapper
-    );
+    try {
+      return this.client.get<Record<string, never>, R>(
+        "/api/admin/payment-providers",
+        undefined,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async getEnabledProviders<R = ResponseDTO<PaymentProviderDTO[]>>(
     mapper?: Mapper<ResponseDTO<PaymentProviderDTO[]>, R>
   ): Promise<R> {
-    return this.client.get<Record<string, never>, R>(
-      "/api/admin/payment-providers/enabled",
-      undefined,
-      mapper
-    );
+    try {
+      return this.client.get<Record<string, never>, R>(
+        "/api/admin/payment-providers/enabled",
+        undefined,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async enableProvider<R = ResponseDTO<PaymentProviderDTO>>(
@@ -58,15 +70,19 @@ export class PaymentProviderEndpoints {
     enabled: boolean,
     mapper?: Mapper<ResponseDTO<PaymentProviderDTO>, R>
   ): Promise<R> {
-    return this.client.put<
-      { enabled: boolean },
-      ResponseDTO<PaymentProviderDTO>,
-      R
-    >(
-      `/api/admin/payment-providers/${providerType}/enable`,
-      { enabled },
-      mapper
-    );
+    try {
+      return this.client.put<
+        { enabled: boolean },
+        ResponseDTO<PaymentProviderDTO>,
+        R
+      >(
+        `/api/admin/payment-providers/${providerType}/enable`,
+        { enabled },
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async updateConfiguration<R = ResponseDTO<PaymentProviderDTO>>(
@@ -74,15 +90,19 @@ export class PaymentProviderEndpoints {
     configuration: PaymentProviderConfiguration,
     mapper?: Mapper<ResponseDTO<PaymentProviderDTO>, R>
   ): Promise<R> {
-    return this.client.put<
-      PaymentProviderConfiguration,
-      ResponseDTO<PaymentProviderDTO>,
-      R
-    >(
-      `/api/admin/payment-providers/${providerType}/configuration`,
-      configuration,
-      mapper
-    );
+    try {
+      return this.client.put<
+        PaymentProviderConfiguration,
+        ResponseDTO<PaymentProviderDTO>,
+        R
+      >(
+        `/api/admin/payment-providers/${providerType}/configuration`,
+        configuration,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async registerWebhook<R = ResponseDTO<WebhookInfo>>(
@@ -90,27 +110,39 @@ export class PaymentProviderEndpoints {
     webhookData: WebhookInfo,
     mapper?: Mapper<ResponseDTO<WebhookInfo>, R>
   ): Promise<R> {
-    return this.client.post<WebhookInfo, ResponseDTO<WebhookInfo>, R>(
-      `/api/admin/payment-providers/${providerType}/webhook`,
-      webhookData,
-      mapper
-    );
+    try {
+      return this.client.post<WebhookInfo, ResponseDTO<WebhookInfo>, R>(
+        `/api/admin/payment-providers/${providerType}/webhook`,
+        webhookData,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async deleteWebhook(providerType: string): Promise<void> {
-    return this.client.delete<void, void>(
-      `/api/admin/payment-providers/${providerType}/webhook`
-    );
+    try {
+      return this.client.delete<void, void>(
+        `/api/admin/payment-providers/${providerType}/webhook`
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async getWebhookInfo<R = ResponseDTO<WebhookInfo>>(
     providerType: string,
     mapper?: Mapper<ResponseDTO<WebhookInfo>, R>
   ): Promise<R> {
-    return this.client.get<Record<string, never>, R>(
-      `/api/admin/payment-providers/${providerType}/webhook`,
-      undefined,
-      mapper
-    );
+    try {
+      return this.client.get<Record<string, never>, R>(
+        `/api/admin/payment-providers/${providerType}/webhook`,
+        undefined,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 }

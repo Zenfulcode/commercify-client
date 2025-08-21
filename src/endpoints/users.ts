@@ -18,39 +18,55 @@ export class UserEndpoints {
   async getProfile<R = ResponseDTO<UserDTO>>(
     mapper?: Mapper<ResponseDTO<UserDTO>, R>
   ): Promise<R> {
-    return this.client.get<Record<string, never>, R>(
-      "/api/users/me",
-      undefined,
-      mapper
-    );
+    try {
+      return this.client.get<Record<string, never>, R>(
+        "/api/users/me",
+        undefined,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async updateProfile<R = ResponseDTO<UserDTO>>(
     data: UpdateUserRequest,
     mapper?: Mapper<ResponseDTO<UserDTO>, R>
   ): Promise<R> {
-    return this.client.put<UpdateUserRequest, ResponseDTO<UserDTO>, R>(
-      "/api/users/me",
-      data,
-      mapper
-    );
+    try {
+      return this.client.put<UpdateUserRequest, ResponseDTO<UserDTO>, R>(
+        "/api/users/me",
+        data,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async changePassword(data: ChangePasswordRequest): Promise<void> {
-    return this.client.put<ChangePasswordRequest, void, void>(
-      "/api/users/me/password",
-      data
-    );
+    try {
+      return this.client.put<ChangePasswordRequest, void, void>(
+        "/api/users/me/password",
+        data
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async listUsers<R = ListResponseDTO<UserDTO>>(
     params?: AdminUserListRequest,
     mapper?: Mapper<ListResponseDTO<UserDTO>, R>
   ): Promise<R> {
-    return this.client.get<AdminUserListRequest, R>(
-      "/api/admin/users",
-      params || {},
-      mapper
-    );
+    try {
+      return this.client.get<AdminUserListRequest, R>(
+        "/api/admin/users",
+        params || {},
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 }

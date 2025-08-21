@@ -12,10 +12,14 @@ export class HealthEndpoints {
   async check<R = HealthCheckResponse>(
     mapper?: Mapper<HealthCheckResponse, R>
   ): Promise<R> {
-    return this.client.get<Record<string, never>, R>(
-      "/api/health",
-      undefined,
-      mapper
-    );
+    try {
+      return this.client.get<Record<string, never>, R>(
+        "/api/health",
+        undefined,
+        mapper
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 }
