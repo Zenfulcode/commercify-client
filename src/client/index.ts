@@ -11,6 +11,7 @@ import { UserEndpoints } from "../endpoints/users";
 import { PaymentProviderEndpoints } from "../endpoints/payment-providers";
 import { AdminEndpoints } from "../endpoints/admin";
 import { HealthEndpoints } from "../endpoints/health";
+import { DashboardEndpoints } from "../endpoints/dashboard";
 
 export class CommercifyApiClient extends BaseApiClient {
   public checkout: CheckoutEndpoints;
@@ -25,6 +26,7 @@ export class CommercifyApiClient extends BaseApiClient {
   public paymentProviders: PaymentProviderEndpoints;
   public admin: AdminEndpoints;
   public health: HealthEndpoints;
+  public dashboard: DashboardEndpoints;
 
   constructor(baseURL: string) {
     super(baseURL);
@@ -40,5 +42,6 @@ export class CommercifyApiClient extends BaseApiClient {
     this.paymentProviders = new PaymentProviderEndpoints(this);
     this.admin = new AdminEndpoints(this);
     this.health = new HealthEndpoints(this);
+    this.dashboard = new DashboardEndpoints(this);
   }
 }
